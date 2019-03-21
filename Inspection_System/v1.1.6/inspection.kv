@@ -1,0 +1,271 @@
+#:import Factory kivy.factory.Factory
+# Start of Screen Manager
+<SM>:
+	Screen:
+		id: main_page
+		name: "main_page"
+		
+		BoxLayout:
+			orientation: "horizontal"
+			
+			BoxLayout:
+				orientation: "vertical"
+				size_hint: 640, 1
+				
+				KivyCamera:
+					id: camera
+					size_hint: 1, 480
+					canvas:
+						Rectangle:
+							texture: self.texture
+							size: self.width, self.height
+							pos: self.x, self.y
+				
+				ScrollView:
+					id: scroller
+					size_hint: 1, 100
+					bar_width: 10
+					bar_color: 1, 0, 0, 1
+					TextInput:
+						id: console
+						size_hint: 1, 1
+						multiline: True
+						readonly: True
+						foreground_color: 1, 0, 0, 1
+						background_color: .1, .1, .1, 1
+				
+			BoxLayout:
+				id: main_sidebar
+				orientation: "vertical"
+				size_hint: 160, 1
+				
+				AsyncImage:
+			    	source: "./logo.png"
+			    	size_hint: 1, 0.2
+			    	canvas.before:
+			    		Color:
+			    			rgb: .1, .1, .1
+				    	Rectangle:
+				    		pos: self.pos
+	                    	size: self.size
+				
+				RedButton:
+					id: start_button
+					text: "ON/OFF"
+					size_hint: 1, .2
+					background_color: 1, .1, .1, 1
+					on_press: root.cam_toggle()
+				
+				Button:
+					id: test_label
+					size_hint: 1, .2
+					text: "STATUS"
+					disabled: True
+					background_disabled_normal: ""
+					
+				GenericButton:
+			    	id: capture_button
+			    	text: "CAPTURE"
+			    	size_hint: 1, 0.2
+			    	#on_press: root.ids.camera.cv2_select_roi()
+			    	on_press: Factory.SelectROI().open()
+			    	
+			    GenericButton:
+			    	id: reset_button
+			    	text: "NEXT"
+			    	disabled: False
+			    	size_hint: 1, 0.2
+			    	on_press: root.next()
+			    	
+			    GenericButton:
+			    	id: settings_button
+			    	text: "SETTINGS"
+			    	size_hint: 1, 0.2
+    				on_press: root.change_page()
+		
+	Screen:
+		id: settings_page
+		name: "settings_page"
+		
+		BoxLayout:
+			orientation: "horizontal"
+			
+			BoxLayout:
+				orientation: "vertical"
+				size_hint: 640, 1
+				
+				BoxLayout:
+					orientation: "vertical"
+					size_hint: 1, 480
+					
+					Label:
+						id: threshold_label
+						size_hint: 1, .1
+						text: "Sensitivity: " + str(threshold_value.value)
+						
+					ThresholdSlider:
+						id: threshold_value
+						orientation: "horizontal"
+						size_hint: 1, .1
+						min: 0
+						max: 1
+						value: round(self.value, 2)
+						step: 0.01
+						
+					Label:
+						id: feature_label
+						size_hint: 1, .1
+						text: "Feature to detect:"
+						
+					BoxLayout: # Filling in empty spaces
+						id: holder
+						orientation: "vertical"
+						size_hint: 1, .7
+				
+				ScrollView:
+					id: scroller2
+					size_hint: 1, 100
+					bar_width: 10
+					bar_color: 1, 0, 0, 1
+					TextInput:
+						id: console2
+						size_hint: 1, 1
+						multiline: True
+						readonly: True
+						foreground_color: 1, 0, 0, 1
+						background_color: .1, .1, .1, 1
+			
+			BoxLayout:
+				orientation: "vertical"
+			    size_hint: 160, 1
+			    
+				AsyncImage:
+			    	source: "./logo.png"
+			    	size_hint: 1, 0.2
+			    	canvas.before:
+			    		Color:
+			    			rgb: .1, .1, .1
+				    	Rectangle:
+				    		pos: self.pos
+	                    	size: self.size
+			    	
+			    GenericButton:
+			    	id: addf_button
+			    	text: "ADD FEATURE"
+			    	size_hint: 1, 0.2
+			    	on_press: Factory.AddFPopup().open()
+			    	
+			    GenericButton:
+			    	id: delf_button
+			    	text: "DEL FEATURE"
+			    	#disabled: True
+			    	size_hint: 1, 0.2
+			    	on_press: Factory.DelFPopup().open()
+			    	
+			    GenericButton:
+			    	id: default_button
+			    	text: "DATA RESET"
+			    	disabled: False
+			    	size_hint: 1, 0.2
+			    	on_press: root.reset()
+			    	
+			    GenericButton:
+			    	id: back_button
+			    	text: "BACK"
+			    	size_hint: 1, 0.2
+			    	on_press: root.change_page()
+			    	
+# End of Screen Manager
+# Start of Extra wWidget
+<AddFPopup>:
+    auto_dismiss: False
+    size_hint: 0.4, 0.3
+    title: "Adding a feature!"
+    BoxLayout:
+    	id: box
+    	orientation: "vertical"
+    	Label:
+    		font_size: 0.6*self.height
+    		text: "Feature Name:"
+    		size_hint: 1, 0.25
+    	BoxLayout:
+    		size_hint: 1, 0.05
+    	TextInput:
+    		id: feature_name
+    		font_size: 0.6*self.height
+    		size_hint: 1, 0.25
+    		multiline: False
+    	BoxLayout:
+    		size_hint: 1, 0.15
+	    Button:
+	    	size_hint: 1, 0.3
+	    	font_size: 0.6*self.height
+	        text: "Submit"
+	        on_press: root.add_feature()
+	       
+<DelFPopup>:
+    auto_dismiss: False
+    size_hint: 0.4, 0.35
+    title: "Adding a feature!"
+    BoxLayout:
+    	orientation: "vertical"
+    	Label:
+    		text: "Deleting feature:"
+    		font_size: 0.6*self.height
+    		size_hint: 1, 0.2
+    	Label:
+    		text: f"{app.root.ids.camera.feature_detect}"
+    		font_size: 0.6*self.height
+    		size_hint: 1, 0.2
+    	BoxLayout:
+    		size_hint: 1, 0.05
+	    Button:
+	    	size_hint: 1, 0.2
+	    	font_size: 0.6*self.height
+	        text: "Yes"
+	        on_press: root.del_feature()
+	    Button:
+	    	size_hint: 1, 0.2
+	    	font_size: 0.6*self.height
+	        text: "No"
+	        on_press: root.dismiss()
+	        
+<SelectROI>:
+	id: roi
+	size_hint: None, None
+	size: 665, 550
+	auto_dismiss: False
+	title: "Select ROI of Feature to Detect:"
+	BoxLayout:
+		id: roi_box
+		orientation: "vertical"
+		SelectROIImage:
+			id: image
+			size_hint: None, 0.9
+			size: 640, 480
+			canvas:
+				Rectangle:
+					texture: self.texture
+					size: self.width, self.height
+					pos: self.x, self.y
+		Button:
+			id: button
+			size_hint: 1, 0.1
+	    	font_size: 0.6*self.height
+	        text: "Confirm"
+	        on_press: root.dismiss()
+	        on_press: root.ids.image.confirm()
+			
+# Start of Widget Styling
+<Label>:
+	font_size: 0.5*self.height
+	bold: True
+	background_color: (0.3, 0.3, 0.3, 1)
+	
+<Button>:
+	font_size: 0.17*self.height
+	bold: True
+	background_color: (0.3, 0.3, 0.3, 1)
+	
+<TextInput>:
+	font_size: 0.15*self.height
