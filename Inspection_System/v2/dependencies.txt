@@ -1,0 +1,7 @@
+imutils
+shutil
+numpy
+kivy
+json
+cv2
+os

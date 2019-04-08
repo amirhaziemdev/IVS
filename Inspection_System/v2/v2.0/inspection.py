@@ -1,47 +1,8 @@
 """
-version 0.0.1.04032019 by Ammar
--GUI Placeholder
+Created by: Ahmad Ammar Asyraaf Bin Jainuddin
+Version: 2.0.0-08042019
+Last Modified: 11:26 AM - 08/04/2019
 
-version 0.0.2 05032019 by Ammar
--added version 2 of feature detection (in seperate func for now)
-
-version 0.0.3 07032019 by Ammar
--remove version 2 of feature detection
--improve feature detection for multiple images
-
-version 0.0.4 08032019 by Ammar
--added lbp cascade classifier for object detection
-    -very laggy
-
-version 0.0.5 11032019 by Ammar
--moves top not to a seperate readme files
-
-version 0.0.6 11032019 by Ammar
--added object detection with KAZE + flann method
--added choosing feature detection function
--minor GUI changes
-
-version 0.0.7 12032019 by Ammar
--back to using template matching for feature detection
--more GUI functions ( Reset )
-
-version 1.0.0 19032019 by Ammar
--code rewrite for better readability
--more GUI functions ( Add/Remove features, Autoload previous settings )
-
-version 1.0.5 20032019 by Ammar
--minor bug fixes
-
-version 1.1.0 20032019 by Ammar
--added InternalROI
-
-version 1.1.2 20032019 by Ammar
--various GUI changes
--bug fixes
-
-version 1.1.6 20032019 by Ammar
--SelectROI now shown on GUI
--bug fixes
 """
 from kivy.config import Config
 import imutils
